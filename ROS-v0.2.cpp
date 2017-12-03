@@ -26,7 +26,7 @@ void Setting(){
 //Add
 
 void Add(string itemName,int itemCategory,int itemPrice){
-	ofstream out("PhoneBook.txt",ios::app);
+	ofstream myfile;
 	cout<<"\n\n\t\t\t\t%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"<<endl;
 	cout<<"\t\t\t\t\t\tAdding Item";
 	cout<<"\n\t\t\t\t%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"<<endl;	
@@ -34,17 +34,103 @@ void Add(string itemName,int itemCategory,int itemPrice){
 	cout<<"\n\t\t\t\t1.Fastfood, 2.Coldrinks, 3.Desert, 4.Spicy, 5.Salad"<<endl;
 	cout<<"\n\t\t\t\t";
 	cin>>itemCategory;
+	if(itemCategory==1){
+		myfile.open("fastfood.txt",ios::app);
+	}
 	cout<<"\n\t\t\t\tEnter Item Name: ";
 	cin>>itemName;
-	
 	cout<<"\n\t\t\t\tEnter Item Price: ";
 	cin>>itemPrice;
+	myfile<<itemName<<"(PKR "<<itemPrice<<")"<<endl;
+	myfile.close();
 	cout<<"\n\t\t\t\t0.Back\n"<<endl;
 	cout<<"\t\t\t\tEnter: ";	
 }
 
-
-
+void deleteItem(string itemName,int itemCategory,int itemPrice){
+//	ofstream myfile;
+	int no=1;
+	string line;
+	ifstream myfile ("fastfood.txt");
+	ofstream temp;
+	temp.open("temp.txt");
+	cout<<"\n\n\t\t\t\t%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"<<endl;
+	cout<<"\t\t\t\t\t\Deleting Item";
+	cout<<"\n\t\t\t\t%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"<<endl;	
+	cout<<"\n\t\t\t\tSelect Item Category"<<endl;
+	cout<<"\n\t\t\t\t1.Fastfood, 2.Coldrinks, 3.Desert, 4.Spicy, 5.Salad"<<endl;
+	cout<<"\n\t\t\t\t";
+	cin>>itemCategory;
+	if(itemCategory==1){
+		ifstream myfile ("fastfood.txt");
+		if(myfile.is_open()){
+			while(getline (myfile,line)){
+				cout<<"\t\t\t\t"<<no<<". "<<line<<endl;
+				no++;
+			}
+		myfile.close();
+		}
+	}
+	cout<<"Enter Item name to Remove: ";
+	cin>>itemName;
+	while(getline(myfile,line)){
+		if(line.find(itemName) != string::npos){
+			
+		}else{
+			temp<<line<<endl;
+		}
+	}
+	temp.close();
+	myfile.close();
+	remove("fastfood.txt");
+	rename("temp.txt","fastfood.txt");
+	cout<<"Item Deleted, Enter 0 to go back:";
+}
+void editItem(string itemName,int itemCategory,int itemPrice){
+	//	ofstream myfile;
+	int no=1;
+	string line;
+	ifstream myfile ("fastfood.txt");
+	ofstream temp;
+	temp.open("temp.txt");
+	cout<<"\n\n\t\t\t\t%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"<<endl;
+	cout<<"\t\t\t\t\t\Editing Item";
+	cout<<"\n\t\t\t\t%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"<<endl;	
+	cout<<"\n\t\t\t\tSelect Item Category"<<endl;
+	cout<<"\n\t\t\t\t1.Fastfood, 2.Coldrinks, 3.Desert, 4.Spicy, 5.Salad"<<endl;
+	cout<<"\n\t\t\t\t";
+	cin>>itemCategory;
+	if(itemCategory==1){
+		ifstream myfile ("fastfood.txt");
+		if(myfile.is_open()){
+			while(getline (myfile,line)){
+				cout<<"\t\t\t\t"<<no<<". "<<line<<endl;
+				no++;
+			}
+		myfile.close();
+		}
+	}
+	string newItem;
+	int NewPrice;
+	cout<<"Enter Item name to Edit: ";
+	cin>>itemName;
+	cout<<"Enter New Name: ";
+	cin>>newItem;
+	cout<<"Enter Price: ";
+	cin>>NewPrice;
+	while(getline(myfile,line)){
+		if(line.find(itemName) != string::npos){
+			temp<<newItem<<"(PKR "<<NewPrice<<")"<<endl;
+		}else{
+			temp<<line<<endl;
+		}
+	}
+	temp.close();
+	myfile.close();
+	remove("fastfood.txt");
+	rename("temp.txt","fastfood.txt");
+	cout<<"Item Edit, Enter 0 to go back:";
+}
 //End Add
 
 //Menu
@@ -71,14 +157,24 @@ void Menu(int Total){
 
 //Fast Food
 void Fastfood(){
+	int no=1;
+	string line;
+	ifstream myfile ("fastfood.txt");
 	cout<<"\n\n\t\t\t\t%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"<<endl;
 	cout<<"\t\t\t\t\t\tFast Food";
-	cout<<"\n\t\t\t\t%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"<<endl;		
-	cout<<"\n\n\t\t\t\t1.Krunch Burger(PKR 150.00)"<<endl;
-	cout<<"\t\t\t\t2.Zinger Stacker(PKR 390.00)"<<endl;
-	cout<<"\t\t\t\t3.Value Burger(PKR 230)"<<endl;
-	cout<<"\t\t\t\t4.Twister(PKR 250)"<<endl;
-	cout<<"\t\t\t\t5.Hot Wings(PKR 350)"<<endl;
+	cout<<"\n\t\t\t\t%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n\n"<<endl;		
+	if(myfile.is_open()){
+		while(getline (myfile,line)){
+			cout<<"\t\t\t\t"<<no<<". "<<line<<endl;
+			no++;
+		}
+		myfile.close();
+	}
+//	cout<<"\n\n\t\t\t\t1.Krunch Burger(PKR 150.00)"<<endl;
+//	cout<<"\t\t\t\t2.Zinger Stacker(PKR 390.00)"<<endl;
+//	cout<<"\t\t\t\t3.Value Burger(PKR 230)"<<endl;
+//	cout<<"\t\t\t\t4.Twister(PKR 250)"<<endl;
+//	cout<<"\t\t\t\t5.Hot Wings(PKR 350)"<<endl;
 	cout<<"\t\t\t\t0.Back";
 	cout<<"\n\n\t\t\t\tEnter: ";
 
@@ -474,6 +570,18 @@ int main(){
 					
 					if(input==1){
 						Add(iN,iC,iP);
+						
+						cin>>input;
+						system("cls");
+					}
+					if(input==2){
+						deleteItem(iN,iC,iP);
+						
+						cin>>input;
+						system("cls");
+					}
+					if(input==3){
+						editItem(iN,iC,iP);
 						
 						cin>>input;
 						system("cls");
